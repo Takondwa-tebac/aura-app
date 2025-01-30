@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 
-const Login = () => {
+const Bookmark = () => {
   return (
     <View>
-      <Text>Login</Text>
+      <Text>bookmark</Text>
     </View>
   );
 };
 
-export default Login;
+export default Bookmark;
 
 const styles = StyleSheet.create({});
