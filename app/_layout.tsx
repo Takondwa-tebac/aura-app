@@ -2,7 +2,7 @@ import { Slot, SplashScreen, Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import "../global.css";
-import { SafeAreaView } from "react-native-safe-area-context";
+
 SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const [fontsLoaded, error] = useFonts({
@@ -17,17 +17,21 @@ export default function RootLayout() {
     "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
   });
 
-  useEffect((): any => {
-    if (error) throw Error;
-    if (fontsLoaded) SplashScreen.hideAsync();
-    if (!fontsLoaded && !error) return null;
+  useEffect(() => {
+    if (error) {
+      throw new Error(error.message);
+    }
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+    if (error) {
+      SplashScreen.hideAsync();
+    }
   }, [fontsLoaded, error]);
 
   return (
-  
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-      </Stack>
-
+    <Stack>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+    </Stack>
   );
 }

@@ -1,22 +1,64 @@
-import { Link } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { Text, View } from "react-native";
+import { Link, useRouter } from "expo-router";
+
+import { ScrollView, Text, View, Image, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function Index() {
-  return (
-    <SafeAreaView>
-      <View className="flex px-4  bg-white flex-col gap-4 items-center justify-center h-screen">
-        <Text className="text-3xl fonts-semibold">Welcome Wena</Text>
-        <StatusBar style="auto" />
+import images from "../constants/images";
+import Button from "@/components/Button";
+import { StatusBar } from "expo-status-bar";
 
-        <Link
-          href="/profile"
-          className="text-white font-pregular md:w-full  border border-white shadow-sm rounded-full  px-2 py-2 text-center  text-xs md:text-xl  bg-orange-500"
-        >
-          Go to profile
-        </Link>
-      </View>
+export default function Index() {
+  const router = useRouter();
+  return (
+    <SafeAreaView className="bg-primary h-full">
+      <ScrollView contentContainerStyle={{ height: "100%" }}>
+        <View className="justify-center items-center w-full h-full px-4">
+          <Image
+            source={images.logo}
+            resizeMode="contain"
+            className="w-[130px] h-[84px]"
+          />
+
+          <Image
+            source={images.cards}
+            resizeMode="contain"
+            className="w-full max-w-[380px] max-h-[300px]"
+          />
+
+          <View className="relative">
+            <Text className="text-white font-pbold text-2xl text-center text-wrap">
+              Discover Endless
+            </Text>
+            <Text className="text-white font-pbold text-2xl text-center text-wrap">
+              Possibilities with{" "}
+              <Text className="text-orange-400 font-pbold text-2xl text-center text-wrap">
+                Aora
+              </Text>
+            </Text>
+
+            <Image
+              source={images.path}
+              resizeMode="contain"
+              className="w-16  absolute -right-1 -bottom-4"
+            />
+          </View>
+
+          <View className="mt-10">
+            <Text className="text-white font-extralight text-xs text-center text-wrap">
+              Where Creativity Meets Innovation: Embark on a Journey of
+              Limitless Exploration with Aora
+            </Text>
+          </View>
+
+          <Button
+            text="Get Started"
+            presser={() => {
+              router.push("/login");
+            }}
+          />
+        </View>
+      </ScrollView>
+      <StatusBar style="light" />
     </SafeAreaView>
   );
 }
