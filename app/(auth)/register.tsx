@@ -1,14 +1,30 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
+import React from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { images } from "../../constants";
+import { StatusBar } from "expo-status-bar";
 
-const settings_backup_restore = () => {
+const Register = () => {
   return (
-    <View>
-      <Text>settings_backup_restore</Text>
-    </View>
-  )
-}
+    <>
+      <SafeAreaView className="bg-primary h-full">
+        <ScrollView>
+          <View className="flex flex-col gap-4  w-full h-full px-4">
+            <Image
+              source={images.logo}
+              resizeMode="contain"
+              className="w-[130px] h-[84px]"
+            />
 
-export default settings_backup_restore
+            <Text className="text-5xl font-pbold text-white my-5"> Login</Text>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+      <StatusBar style="light" />
+    </>
+  );
+};
 
-const styles = StyleSheet.create({})
+export default Register;
+
+const styles = StyleSheet.create({});
