@@ -15,7 +15,7 @@ import images from "../../constants/images";
 import SearchField from "@/components/search-input";
 import Trending from "@/components/trending";
 import EmptyState from "@/components/empty-state";
-import { getVideos } from "@/appwrite.config";
+import { getLatest, getVideos } from "@/appwrite.config";
 import useAppWrite from "@/lib/useAppWrite";
 import VideoCard from "@/components/video-card";
 
@@ -25,6 +25,8 @@ const Home = () => {
   const [query, setQuery] = useState(" ");
   const [refershing, setRefershing] = useState(false);
   const { data: posts, refetch } = useAppWrite(getVideos);
+  const { data: latestPosts, refetch: refetchLatest } = useAppWrite(getLatest);
+
   const onRefresh = async () => {
     setRefershing(true);
     await refetch();
@@ -67,7 +69,7 @@ const Home = () => {
                 Latest Video
               </Text>
 
-              <Trending posts={posts ?? []} />
+              <Trending latest={latestPosts} refetch={refetchLatest} />
             </View>
           </View>
         }
