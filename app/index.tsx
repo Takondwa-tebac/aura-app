@@ -1,4 +1,4 @@
-import { Link, useRouter } from "expo-router";
+import { Link, Redirect, useRouter } from "expo-router";
 
 import { ScrollView, Text, View, Image, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -7,8 +7,13 @@ import images from "../constants/images";
 import Button from "@/components/Button";
 import { StatusBar } from "expo-status-bar";
 
+import { useGlobalContext } from "@/context/GlobalProvider";
 export default function Index() {
   const router = useRouter();
+  const { isLoading, isLoggedIn } = useGlobalContext();
+
+  if (!isLoading && isLoggedIn) return <Redirect href="/home" />;
+
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
@@ -18,7 +23,7 @@ export default function Index() {
             resizeMode="contain"
             className="w-[130px] h-[84px]"
           />
-          
+
           <Image
             source={images.cards}
             resizeMode="contain"

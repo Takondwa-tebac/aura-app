@@ -5,13 +5,15 @@ import {
   View,
   Image,
   ScrollView,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import { images } from "../../constants";
 
 import FormField from "@/components/form-field";
 import Button from "@/components/Button";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
+import { signIn } from "@/appwrite.config";
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -20,6 +22,27 @@ const Login = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
+  const handleSubmit = async () => {
+    if (!form.email || !form.password) {
+      Alert.alert("Error", "Please fill all the fields");
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const result = await signIn(form);
+
+      // set it to global state;
+
+      router.replace("/home");
+    } catch (error: any) {
+      Alert.alert("Error", error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView>
@@ -47,7 +70,11 @@ const Login = () => {
             onChange={(text: string) => setForm({ ...form, password: text })}
           />
 
-          <Button text="Login" presser={() => {}} isLoading={isSubmitting} />
+          <Button
+            text="Login"
+            presser={() => handleSubmit()}
+            isLoading={isSubmitting}
+          />
         </View>
 
         <View className="flex-row items-center justify-center pt-5 gap-2">

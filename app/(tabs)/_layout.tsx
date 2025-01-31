@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Image } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import icons from "../../constants/icons";
+import { StatusBar } from "expo-status-bar";
 
 const TabIcon = ({
   icon,
@@ -15,12 +16,12 @@ const TabIcon = ({
   focused: any;
 }) => {
   return (
-    <View className="gap-2 justify-center items-center text-nowrap w-full mt-20">
+    <View className="gap-2 justify-center items-center  w-20 my-2">
       <Image
         source={icon}
         resizeMode="contain"
         tintColor={color}
-        className="w-6 h-6"
+        className="w-6 h-6 mt-10"
       />
       <Text
         className={`${focused ? "font-psemibold" : "font-pregular"} text-xs`}
@@ -112,6 +113,7 @@ const TabsLayout = () => {
           }}
         />
       </Tabs>
+      <StatusBar style="light" backgroundColor="#161622" />
     </>
   );
 };
