@@ -97,3 +97,14 @@ export const getUser = async () => {
     throw new Error(error);
   }
 }
+
+
+export const getVideos = async () => {
+  try {
+    const videos = await databases.listDocuments(appwriteConfig.databaseId, appwriteConfig.videoCollectionId);
+    return videos.documents;
+  } catch (error: any) {
+    console.log(error);
+    throw new Error(error);
+  }
+}

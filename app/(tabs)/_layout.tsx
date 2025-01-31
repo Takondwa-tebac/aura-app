@@ -37,13 +37,14 @@ const TabsLayout = () => {
   return (
     <>
       <Tabs
+        className="shadow-sm shadow-black-500/50"
         screenOptions={{
           tabBarShowLabel: false,
           tabBarActiveTintColor: "#FFA001",
           tabBarInactiveTintColor: "#CDCDE0",
           tabBarStyle: {
             backgroundColor: "#161622",
-            borderTopWidth: 1,
+            borderTopWidth: 0.5,
             borderTopColor: "#232533",
             height: 70,
           },
