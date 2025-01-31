@@ -12,19 +12,18 @@ export default function Index() {
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
-        <View className="justify-center items-center w-full h-full min-h-[85vh]">
+        <View className="justify-center items-center w-full h-full min-h-[85vh] px-4">
           <Image
             source={images.logo}
             resizeMode="contain"
             className="w-[130px] h-[84px]"
           />
-
+          
           <Image
             source={images.cards}
             resizeMode="contain"
             className="w-full max-w-[380px] max-h-[300px]"
           />
-
           <View className="relative">
             <Text className="text-white font-pbold text-2xl text-center text-wrap">
               Discover Endless
@@ -42,14 +41,12 @@ export default function Index() {
               className="w-16  absolute -right-1 -bottom-4"
             />
           </View>
-
           <View className="mt-10">
             <Text className="text-white font-extralight text-xs text-center text-wrap">
               Where Creativity Meets Innovation: Embark on a Journey of
               Limitless Exploration with Aora
             </Text>
           </View>
-
           <Button
             text="Get Started"
             presser={() => {
