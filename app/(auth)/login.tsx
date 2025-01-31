@@ -20,20 +20,20 @@ const Login = () => {
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView>
-        <View className="flex flex-col gap-4  w-full h-full px-4 mt-10">
+        <View className="flex flex-col gap-1  w-full h-full px-4 mt-10">
           <Image
             source={images.logo}
             resizeMode="contain"
             className="w-[130px] h-[84px]"
           />
 
-          <Text className="text-5xl font-pbold text-white my-5"> Login</Text>
+          <Text className="text-2xl font-pbold text-white mt-2">Login</Text>
           <FormField
             title="Email"
             placeholder="Enter your email"
             type="email"
             value={form.email}
-            onChange={(text) => setForm({ ...form, email: text })}
+            onChange={(text: string) => setForm({ ...form, email: text })}
           />
 
           <FormField
@@ -41,7 +41,7 @@ const Login = () => {
             placeholder="Enter your password"
             type="password"
             value={form.password}
-            onChange={(text) => setForm({ ...form, password: text })}
+            onChange={(text: string) => setForm({ ...form, password: text })}
           />
 
           <Button text="Login" presser={() => {}} />

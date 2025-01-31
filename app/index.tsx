@@ -12,7 +12,7 @@ export default function Index() {
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
-        <View className="justify-center items-center w-full h-full px-4">
+        <View className="justify-center items-center w-full h-full min-h-[85vh]">
           <Image
             source={images.logo}
             resizeMode="contain"
@@ -55,6 +55,7 @@ export default function Index() {
             presser={() => {
               router.push("/login");
             }}
+            isLoading={false}
           />
         </View>
       </ScrollView>
