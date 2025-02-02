@@ -1,13 +1,26 @@
-import { Text, View, TextInput, TouchableOpacity, Image } from "react-native";
+import {
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from "react-native";
 import React, { useState } from "react";
 import icons from "../constants/icons";
 import { usePathname, useRouter } from "expo-router";
+
 const SearchField = () => {
   const path = usePathname();
   const router = useRouter();
   const handleSearch = () => {
-    if (query && query.length > 4) {
-      router.push(`/search/${query}`);
+    if (query.length === 0) {
+      Alert.alert("Search something", "Please enter a search term");
+    } else {
+      {
+        if (path.startsWith("/search")) router.setParams({ query });
+        else router.push(`/search/${query}`);
+      }
     }
   };
   console.log(path);
@@ -21,7 +34,7 @@ const SearchField = () => {
           placeholderTextColor={"#7b7b8b"}
           value={query}
           onChangeText={(e) => setQuery(e)}
-          className="flex-1 text-base font-pmedium text-gray-100"
+          className="flex-1 text-base font-pmedium text-gray-100 focus:border-secondary-200 focus:outline-secondary-200"
         />
 
         <TouchableOpacity onPress={handleSearch}>
