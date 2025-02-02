@@ -1,9 +1,29 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
+import { VideoView, useVideoPlayer } from "expo-video";
+import { useEvent } from "expo";
 import icons from "../constants/icons";
 
 const VideoCard = ({ video }: { video: Object }) => {
   const [playing, setPlaying] = useState(false);
+
+  const player = useVideoPlayer(video?.video, (player) => {
+    player.loop = true;
+    player.play();
+  });
+
+  const { isPlaying } = useEvent(player, "playingChange", {
+    isPlaying: player.playing,
+  });
+
+  const onPress = () => {
+    setPlaying(!playing);
+    if (isPlaying) {
+      player.pause();
+    } else {
+      player.play();
+    }
+  };
 
   return (
     // <View className="mb-2 w-full flex-col gap-2 items-center">
@@ -47,11 +67,17 @@ const VideoCard = ({ video }: { video: Object }) => {
       {/* video container */}
 
       {playing ? (
-        <Text className="text-white text-xs">Playing</Text>
+        <VideoView
+          className="w-full h-60 rounded-xl justify-center items-start px-4 my-2"
+          player={player}
+          allowsFullscreen
+          allowsPictureInPicture
+          nativeControls
+        />
       ) : (
         <TouchableOpacity
           className="w-full h-60 rounded-xl justify-center items-start px-4 my-2"
-          onPress={() => setPlaying(true)}
+          onPress={() => onPress()}
           activeOpacity={0.7}
         >
           {/* <View className="w-full flex-1 rounded relative group mt-4"> */}

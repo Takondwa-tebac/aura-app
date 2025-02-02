@@ -22,7 +22,6 @@ import VideoCard from "@/components/video-card";
 const Home = () => {
   const { user, isLoggedIn, isLoading } = useGlobalContext();
 
-  const [query, setQuery] = useState(" ");
   const [refershing, setRefershing] = useState(false);
   const { data: posts, refetch } = useAppWrite(getVideos);
   const { data: latestPosts, refetch: refetchLatest } = useAppWrite(getLatest);
@@ -57,19 +56,14 @@ const Home = () => {
               />
             </View>
 
-            <SearchField
-              title="Search"
-              placeholder="Search"
-              type="text"
-              value={query}
-              onChange={setQuery}
-            />
+            <SearchField />
+            
             <View className="w-full flex-1 pt-5 pb-8">
               <Text className="text-gray-100 font-pregular text-lg">
                 Latest Video
               </Text>
 
-              <Trending latest={latestPosts} refetch={refetchLatest} />
+              <Trending posts={latestPosts} />
             </View>
           </View>
         }
