@@ -3,6 +3,7 @@ import React from "react";
 import { Tabs } from "expo-router";
 import icons from "../../constants/icons";
 import { StatusBar } from "expo-status-bar";
+import { GlobalProvider } from "@/context/GlobalProvider";
 
 const TabIcon = ({
   icon,
@@ -35,7 +36,7 @@ const TabIcon = ({
 
 const TabsLayout = () => {
   return (
-    <>
+    <GlobalProvider>
       <Tabs
         className="shadow-sm shadow-black-500/50"
         screenOptions={{
@@ -115,7 +116,7 @@ const TabsLayout = () => {
         />
       </Tabs>
       <StatusBar style="light" backgroundColor="#161622" />
-    </>
+    </GlobalProvider>
   );
 };
 

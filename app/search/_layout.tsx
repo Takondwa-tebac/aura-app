@@ -3,7 +3,11 @@ import React from "react";
 import { Stack } from "expo-router";
 
 const SearchLayout = () => {
-  return <Stack screenOptions={{ headerShown: false }} name="[query]"></Stack>;
+  return (
+    <Stack>
+      <Stack.Screen name="[query]" options={{ headerShown: false }} />
+    </Stack>
+  );
 };
 
 export default SearchLayout;

@@ -33,19 +33,19 @@ const zoomOut = {
 
 const TrendingItem = ({ activeItem, item }: { activeItem: any; item: any }) => {
   const [playing, setPlaying] = useState(false);
-    const player = useVideoPlayer(item.video, (player) => {
-      player.loop = true;
-    });
+  const player = useVideoPlayer(item.video, (player) => {
+    player.loop = true;
+  });
 
-    const { isPlaying } = useEvent(player, "playingChange", {
-      isPlaying: player.playing,
-    });
+  const { isPlaying } = useEvent(player, "playingChange", {
+    isPlaying: player.playing,
+  });
 
-    const play = () => {
-      player.play();
-      Alert.alert("Playing", player.status);
-      console.log(item.video);
-    };
+  const play = () => {
+    player.play();
+    Alert.alert("Playing", player.status);
+    console.log(item.video);
+  };
 
   return (
     <Animatable.View
@@ -62,8 +62,6 @@ const TrendingItem = ({ activeItem, item }: { activeItem: any; item: any }) => {
             allowsPictureInPicture
             nativeControls
           />
-
-          
         </View>
       ) : (
         <TouchableOpacity
@@ -107,6 +105,7 @@ const Trending = ({ posts }: { posts: Object[] }) => {
     <FlatList
       data={posts}
       horizontal
+      showsVerticalScrollIndicator={false}
       keyExtractor={(item) => item.$id}
       renderItem={({ item }) => (
         <TrendingItem activeItem={activeItem} item={item} />

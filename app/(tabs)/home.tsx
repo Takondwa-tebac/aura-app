@@ -35,6 +35,8 @@ const Home = () => {
   return (
     <SafeAreaView className="bg-primary h-full ">
       <FlatList
+        showsHorizontalScrollIndicator={false}
+       
         data={posts}
         keyExtractor={(item: any) => item.$id}
         renderItem={({ item }) => <VideoCard video={item} />}
@@ -57,7 +59,7 @@ const Home = () => {
             </View>
 
             <SearchField />
-            
+
             <View className="w-full flex-1 pt-5 pb-8">
               <Text className="text-gray-100 font-pregular text-lg">
                 Latest Video

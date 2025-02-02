@@ -71,11 +71,12 @@ export const signIn= async({email, password}:{email: string, password: string}) 
 
 }
 
-export const signOut = async () => {
+export async function signOut() {
   try {
-    await account.deleteSession("current");
-  } catch (error: any) {
-    console.log(error);
+    const session = await account.deleteSession("current");
+
+    return session;
+  } catch (error) {
     throw new Error(error);
   }
 }
@@ -118,5 +119,40 @@ export const getLatest = async () => {
   } catch (error: any) {
     console.log(error);
     throw new Error(error);
+  }
+}
+
+
+export const searchPosts = async (searchQuery: string): Promise<Appwrite.Document[]> => {
+  try {
+    const searchQueryLowercase = searchQuery.toLocaleLowerCase();
+    const videos = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.videoCollectionId,
+      [
+        Query.search("title", searchQueryLowercase),
+      ],
+    );
+
+    return videos.documents;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+
+
+export async function getUserVideos(userId: string): Promise<Appwrite.Document[]> {
+  try {
+    const videos = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.videoCollectionId,
+      [Query.equal("creator", userId)]
+    );
+
+    return videos.documents;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to get user videos");
   }
 }

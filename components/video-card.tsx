@@ -26,14 +26,6 @@ const VideoCard = ({ video }: { video: Object }) => {
   };
 
   return (
-    // <View className="mb-2 w-full flex-col gap-2 items-center">
-    //   <Text className="text-white">{video?.title}</Text>
-    //   <Image
-    //     source={{ uri: video?.thumbnail }}
-    //     className="w-full h-44"
-    //     resizeMode="contain"
-    //   />
-    // </View>
 
     <View className="flex-col items-center mb-14">
       <View className="flex-row gap-3 items-start px-4 ">

@@ -10,7 +10,7 @@ import React, { useState } from "react";
 import icons from "../constants/icons";
 import { usePathname, useRouter } from "expo-router";
 
-const SearchField = () => {
+const SearchField = ({ initialQuery = "" }: { initialQuery: string }) => {
   const path = usePathname();
   const router = useRouter();
   const handleSearch = () => {
@@ -23,8 +23,8 @@ const SearchField = () => {
       }
     }
   };
-  console.log(path);
-  const [query, setQuery] = useState(" ");
+
+  const [query, setQuery] = useState( initialQuery);
 
   return (
     <View className="space-y-2 my-5">
