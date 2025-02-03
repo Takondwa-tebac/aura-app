@@ -14,6 +14,8 @@ import Button from "@/components/Button";
 import * as DocumentPicker from "expo-document-picker";
 import { useVideoPlayer, VideoView } from "expo-video";
 import { useEvent } from "expo";
+import { router } from "expo-router";
+import { uploadVideo } from "@/appwrite.config";
 
 const Create = () => {
   const [uploading, setUploading] = useState(false);
@@ -24,29 +26,51 @@ const Create = () => {
     prompt: "",
   });
 
-  const openFilePicker = (type: string) => {
-    // Alert.alert("Select file");
-    return async () => {
-      const result = await DocumentPicker.getDocumentAsync({
-        type: type === "video" ? "video/*" : "image/*",
-      });
-      if (result.type === "success") {
-        if (type === "video") {
-          setForm({ ...form, video: result.assets[0].uri });
-        } else {
-          setForm({ ...form, thumbnail: result.assets[0].uri });
-        }
+  const openFilePicker = async (type: string) => {
+    const result = await DocumentPicker.getDocumentAsync({
+      type: type === "video" ? "video/*" : "image/*",
+    });
+
+    if (!result.canceled) {
+      if (type === "video") {
+        // console.log(result);
+        setForm({ ...form, video: result.assets[0] });
+      } else {
+        setForm({ ...form, thumbnail: result.assets[0] });
       }
-    };
+    } else {
+      setTimeout(() => {
+        Alert.alert("Document Picker Error", JSON.stringify(result, null, 2));
+      }, 100);
+    }
   };
 
   const player = useVideoPlayer(form.video, (p) => {
     p.loop = true;
+    p.play();
   });
 
   const { isPlaying } = useEvent(player, "playingChange", {
     isPlaying: player.playing,
   });
+
+  const handleSubmit = async () => {
+    if (!form.title || !form.video || !form.thumbnail) {
+      Alert.alert("Error", "Please fill all the fields");
+    } else {
+      setUploading(true);
+      try {
+        const result = await uploadVideo(form);
+        if (result.status === "error") throw new Error(result.message);
+        setForm({ ...form, video: null, thumbnail: null });
+        router.replace("/home");
+      } catch (e) {
+        Alert.alert("Error", e.message);
+      } finally {
+        setUploading(false);
+      }
+    }
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-primary h-full">
@@ -66,63 +90,39 @@ const Create = () => {
         </View>
 
         <View className="mt-10 flex-col justify-center items-center gap-2 bg-black-100 p-4 rounded-xl h-60">
-          <View className="w-12 h-12 border border-dashed rounded border-secondary-200 justify-center items-center">
-            <Image
-              source={icons.upload}
-              resizeMode="contain"
-              className="w-8 h-8"
-            />
-          </View>
-
           <TouchableOpacity
             activeOpacity={"0.7"}
             onPress={() => {
               openFilePicker("video");
             }}
           >
-            {form?.video ? (
-              <View className="w-52 h-52">
-                <VideoView
-                  className="w-ful h-full"
-                  player={player}
-                  allowsFullscreen
-                  allowsPictureInPicture
-                  nativeControls
+            <View className="flex-col justify-center items-center gap-2">
+              <View className="w-12 h-12 border border-dashed rounded border-secondary-200 justify-center items-center">
+                <Image
+                  source={icons.upload}
+                  resizeMode="contain"
+                  className="w-8 h-8"
                 />
-
-                {isplaying ? (
-                  <View className="absolute top-0 left-0 right-0 bottom-0 flex-row justify-center items-center">
-                    <Image
-                      source={icons.pause}
-                      resizeMode="contain"
-                      className="w-12 h-12"
-                    />
-                  </View>
-                ) : (
-                  <View className="absolute top-0 left-0 right-0 bottom-0 flex-row justify-center items-center">
-                    <Image
-                      source={icons.play}
-                      resizeMode="contain"
-                      className="w-12 h-12"
-                    />
-                  </View>
-                )}
               </View>
-            ) : (
-              <Text className="text-white text-xs">No file selected</Text>
-            )}
+
+              {/* <Text className="text-white text-xs">No file selected</Text> */}
+            </View>
           </TouchableOpacity>
+
+          {form?.video && (
+            <View className="h-full  w-full ">
+              <VideoView
+                className="w-ful h-full"
+                player={player}
+                allowsFullscreen
+                allowsPictureInPicture
+                nativeControls
+              />
+            </View>
+          )}
         </View>
 
-        <View className="mt-10 flex-row justify-center items-center gap-2 bg-black-100 p-4 rounded-xl h-20">
-          <View className="w-12 h-12 border border-dashed rounded border-secondary-200 justify-center items-center">
-            <Image
-              source={icons.upload}
-              resizeMode="contain"
-              className="w-8 h-8"
-            />
-          </View>
-
+        <View className="mt-10 flex-col justify-center items-center bg-black-100 p-4 rounded-xl h-20">
           <TouchableOpacity
             activeOpacity={"0.7"}
             onPress={() => {
@@ -130,9 +130,22 @@ const Create = () => {
             }}
           >
             {form?.thumbnail ? (
-              <Image className="w-52 h-52 " resizeMode="contain" />
+              <Image
+                source={{ uri: form.thumbnail?.uri }}
+                className="w-52 h-52 "
+                resizeMode="contain"
+              />
             ) : (
-              <Text className="text-white text-xs">No file selected</Text>
+              <View className=" flex-row justify-center items-center gap-2">
+                <View className="w-12 h-12 border border-dashed rounded border-secondary-200 justify-center items-center">
+                  <Image
+                    source={icons.upload}
+                    resizeMode="contain"
+                    className="w-8 h-8"
+                  />
+                </View>
+                <Text className="text-white text-xs">No file selected</Text>
+              </View>
             )}
           </TouchableOpacity>
         </View>
@@ -147,7 +160,13 @@ const Create = () => {
           />
         </View>
 
-        <Button presser={() => {}} text="Upload" isLoading={uploading} />
+        <Button
+          presser={() => {
+            handleSubmit();
+          }}
+          text="Upload"
+          isLoading={uploading}
+        />
       </ScrollView>
     </SafeAreaView>
   );

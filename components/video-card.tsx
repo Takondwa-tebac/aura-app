@@ -9,7 +9,6 @@ const VideoCard = ({ video }: { video: Object }) => {
 
   const player = useVideoPlayer(video?.video, (player) => {
     player.loop = true;
-    player.play();
   });
 
   const { isPlaying } = useEvent(player, "playingChange", {
@@ -26,7 +25,6 @@ const VideoCard = ({ video }: { video: Object }) => {
   };
 
   return (
-
     <View className="flex-col items-center mb-14">
       <View className="flex-row gap-3 items-start px-4 ">
         <View className="flex-row flex-1 gap-2 items-center">
