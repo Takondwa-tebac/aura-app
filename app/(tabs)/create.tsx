@@ -13,6 +13,9 @@ const Create = () => {
     thumbnail: null,
     prompt: "",
   });
+
+  const openFilePicker = (type: string) => {};
+
   return (
     <SafeAreaView className="flex-1 bg-primary h-full">
       <ScrollView className="px-4 my-6">
@@ -39,7 +42,10 @@ const Create = () => {
             />
           </View>
 
-          <TouchableOpacity activeOpacity={"0.7"}>
+          <TouchableOpacity
+            activeOpacity={"0.7"}
+            onPress={openFilePicker("video")}
+          >
             {form?.video ? (
               <Text className="text-white text-xs">File Selected</Text>
             ) : (
@@ -57,7 +63,10 @@ const Create = () => {
             />
           </View>
 
-          <TouchableOpacity activeOpacity={"0.7"}>
+          <TouchableOpacity
+            activeOpacity={"0.7"}
+            onPress={openFilePicker("image")}
+          >
             {form?.thumbnail ? (
               <Text className="text-white text-xs">File Selected</Text>
             ) : (
