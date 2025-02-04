@@ -1,47 +1,61 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
-import { VideoView, useVideoPlayer } from "expo-video";
-import { useEvent } from "expo";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import React, { useState, useRef, useEffect } from "react";
+import VideoPlayer, { VideoPlayerRef } from "react-native-video-player";
+
 import icons from "../constants/icons";
 
 const VideoCard = ({ video }: { video: Object }) => {
+  const videoRef = useRef<VideoPlayerRef>(null);
   const [playing, setPlaying] = useState(false);
 
-  const player = useVideoPlayer(video?.video, (player) => {
-    player.loop = true;
-  });
+  // const player = useVideoPlayer(video?.video, (player) => {
+  //   player.loop = true;
+  // });
 
-  const { isPlaying } = useEvent(player, "playingChange", {
-    isPlaying: player.playing,
-  });
+  // const { isPlaying } = useEvent(player, "playingChange", {
+  //   isPlaying: player.playing,
+  // });
 
+  useEffect(() => {
+    if (videoRef.current) {
+      console.log(videoRef.current);
+      Alert.alert("yoo");
+    }
+  }, []);
   const onPress = () => {
     setPlaying(!playing);
-    if (isPlaying) {
-      player.pause();
+    if (videoRef.current) {
+      videoRef.current.seek(0);
     } else {
-      player.play();
+      // videoRef.current.play();
     }
   };
 
   return (
     <View className="flex-col items-center mb-14">
-      <View className="flex-row gap-3 items-start px-4 ">
-        <View className="flex-row flex-1 gap-2 items-center">
-          <View className="w-10 h-10 rounded border-secondary-100 border-2">
+      <View className="flex-row items-start gap-3 px-4 ">
+        <View className="flex-row items-center flex-1 gap-2">
+          <View className="w-10 h-10 border-2 rounded border-secondary-100">
             <Image
-              source={{ uri: video?.creator.avatar }}
+              source={video?.creator.avatar}
               className="w-full h-full"
               resizeMode="contain"
             />
           </View>
 
           <View className="flex-col">
-            <Text className="text-white font-psemibold text-sm">
+            <Text className="text-sm text-white font-psemibold">
               {video.title}
             </Text>
             <Text
-              className="text-gray-100 font-pextralight text-xs"
+              className="text-xs text-gray-100 font-pextralight"
               numberOfLines={1}
             >
               {video?.creator.username}
@@ -57,20 +71,32 @@ const VideoCard = ({ video }: { video: Object }) => {
       {/* video container */}
 
       {playing ? (
-        <VideoView
-          className="w-full h-60 rounded-xl justify-center items-start px-4 my-2"
-          player={player}
-          allowsFullscreen
-          allowsPictureInPicture
-          nativeControls
+        // <VideoView
+        //   className="items-start justify-center w-full px-4 my-2 h-60 rounded-xl"
+        //   player={player}
+        //   allowsFullscreen
+        //   allowsPictureInPicture
+        //   nativeControls
+        // />
+
+        <VideoPlayer
+          ref={videoRef}
+          source={{
+            uri: "https://www.sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4",
+          }}
+          style={styles.video}
+          resizeMode="cover"
+          onError={(e) => console.log(e)}
+          showDuration={true}
+          onEnd={() => setPlaying(false)}
         />
       ) : (
         <TouchableOpacity
-          className="w-full h-60 rounded-xl justify-center items-start px-4 my-2"
+          className="items-start justify-center w-full px-4 my-2 h-60 rounded-xl"
           onPress={() => onPress()}
           activeOpacity={0.7}
         >
-          {/* <View className="w-full flex-1 rounded relative group mt-4"> */}
+          {/* <View className="relative flex-1 w-full mt-4 rounded group"> */}
           <Image
             source={{ uri: video?.thumbnail }}
             className="w-full h-full rounded-xl"
@@ -78,9 +104,9 @@ const VideoCard = ({ video }: { video: Object }) => {
           />
           <Image
             source={icons.play}
-            className="w-12 h-12 absolute top-1/2 left-1/2 z-30 "
+            className="absolute z-30 w-12 h-12 top-1/2 left-1/2 "
           />
-          {/* <View className="inset-0 absolute bg-primary opacity-50 group-focus:opacity-0"></View> */}
+          {/* <View className="absolute inset-0 opacity-50 bg-primary group-focus:opacity-0"></View> */}
           {/* </View> */}
         </TouchableOpacity>
       )}
@@ -90,4 +116,10 @@ const VideoCard = ({ video }: { video: Object }) => {
 
 export default VideoCard;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  video: {
+    width: "100%",
+    height: 240, // Adjust height as needed
+    borderRadius: 12,
+  },
+});

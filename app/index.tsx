@@ -15,7 +15,7 @@ export default function Index() {
   if (!isLoading && isLoggedIn) return <Redirect href="/home" />;
 
   return (
-    <SafeAreaView className="bg-primary h-full">
+    <SafeAreaView className="h-full bg-primary">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
         <View className="justify-center items-center w-full h-full min-h-[85vh] px-4">
           <Image
@@ -30,12 +30,12 @@ export default function Index() {
             className="w-full max-w-[380px] max-h-[300px]"
           />
           <View className="relative">
-            <Text className="text-white font-pbold text-2xl text-center text-wrap">
+            <Text className="text-2xl text-center text-white font-pbold text-wrap">
               Discover Endless
             </Text>
-            <Text className="text-white font-pbold text-2xl text-center text-wrap">
+            <Text className="text-2xl text-center text-white font-pbold text-wrap">
               Possibilities with{" "}
-              <Text className="text-orange-400 font-pbold text-2xl text-center text-wrap">
+              <Text className="text-2xl text-center text-orange-400 font-pbold text-wrap">
                 Aora
               </Text>
             </Text>
@@ -43,11 +43,11 @@ export default function Index() {
             <Image
               source={images.path}
               resizeMode="contain"
-              className="w-16  absolute -right-1 -bottom-4"
+              className="absolute w-16 -right-1 -bottom-4"
             />
           </View>
           <View className="mt-10">
-            <Text className="text-white font-extralight text-xs text-center text-wrap">
+            <Text className="text-xs text-center text-white font-extralight text-wrap">
               Where Creativity Meets Innovation: Embark on a Journey of
               Limitless Exploration with Aora
             </Text>
